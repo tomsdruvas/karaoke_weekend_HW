@@ -1,8 +1,9 @@
 class Room:
-    def __init__(self, name, size, current_guests):
+    def __init__(self, name, size, current_guests, price):
         self.name = name
         self.size = size
         self.current_guests = current_guests
+        self.price = price
         self.songs = []
 
 
@@ -15,6 +16,11 @@ class Room:
 
     def add_song(self, song):
         self.songs.append(song)
+    
+    def reduce_customer_cash(self, amount):
+        self.cash -= amount
 
     def check_in(self, guest):
-        self.current_guests.append(guest)
+        if self.room_size() <= 3:
+            if self.price < guest.cash:
+                self.current_guests.append(guest)

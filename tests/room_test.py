@@ -9,11 +9,14 @@ class TestRoom(unittest.TestCase):
         self.bob = Guest("Bob", 25, 100)
         self.john = Guest("John", 30, 200)
         self.current_guests = [self.bob, self.john]
-        self.room_one = Room("Room One", 2, self.current_guests)
+        self.room_one = Room("Room One", 2, self.current_guests, 10)
         self.rap = Song("Rap")
         self.jazz = Song("Jazz")
-        self.room_two = Room("Room_Two", 3, self.current_guests)
         self.carl = Guest("Carl", 46, 500)
+        self.rick = Guest("Rick", 18, 344)
+        self.current_guests2 = [self.carl, self.john]
+
+        self.room_two = Room("Room_Two", 3, self.current_guests2, 110)
 
     def test_room_has_name(self):
         self.assertEqual("Room One", self.room_one.name)
@@ -36,6 +39,22 @@ class TestRoom(unittest.TestCase):
         self.room_one.add_song(self.jazz)
         self.assertEqual(2, len(self.room_one.songs))
     
-    def test_check_people_in(self):
-        self.room_two.check_in(self.carl)
-        self.assertEqual(3, self.room_one.room_size())
+
+
+    # def test_check_people_in_not_ok(self):
+    #     self.room_two.check_in(self.carl)
+    #     self.room_two.check_in(self.rick)
+    #     self.assertEqual(3, self.room_one.room_size())
+    
+    def test_reduce_cust_cash(self):
+        self.bob.reduce_customer_cash(self.room_one.price)
+        self.assertEqual(90, self.bob.cash)
+    
+    def test_if_not_enough_cash(self):
+        self.room_two.check_in(self.bob)
+        self.assertEqual(2, self.room_two.room_size())
+
+    def test_full_function(self):
+        self.room_two.check_in(self.rick)
+        self.assertEqual(3, self.room_two.room_size())
+
